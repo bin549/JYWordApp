@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             if (etName.text.toString().isEmpty()) {
                 Toast.makeText(this, "Please Enter Your Name", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this, Notebook::class.java)
+                val intent = Intent(this, WordEditor::class.java)
                 startActivity(intent)
             }
         }
