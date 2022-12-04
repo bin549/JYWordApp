@@ -1,4 +1,4 @@
-package com.android.jywordapp
+package com.android.jywordapp.activities
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,10 +9,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.jywordapp.Dao.WordDao
+import com.android.jywordapp.R
+import com.android.jywordapp.WordApp
+import com.android.jywordapp.adapters.ItemAdapter
 import com.android.jywordapp.databinding.ActivityWordEditorBinding
 import com.android.jywordapp.databinding.DialogUpdateBinding
+import com.android.jywordapp.model.WordEntity
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 

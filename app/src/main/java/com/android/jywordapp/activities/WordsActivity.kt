@@ -1,7 +1,8 @@
-package com.android.jywordapp
+package com.android.jywordapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.android.jywordapp.R
 
 class WordsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
