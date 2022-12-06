@@ -20,12 +20,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val userDao = (application as WordApp).db.userDao()
-
         val buttonLogin: Button = findViewById(R.id.btn_login)
         val buttonRegister: Button = findViewById(R.id.btn_register)
-
         val etName: EditText = findViewById(R.id.et_username)
         val etPassword: EditText = findViewById(R.id.et_password)
+
         buttonLogin.setOnClickListener {
             if (etName.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "用户名或者密码不能为空.", Toast.LENGTH_SHORT).show()
@@ -35,8 +34,8 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, WordEditor::class.java)
                     startActivity(intent)
                 } else {
-                      println(123)
-                  }
+                    println(123)
+                }
             }
         }
 
@@ -57,7 +56,11 @@ class MainActivity : AppCompatActivity() {
                     etPassword?.text?.clear()
                 }
             } else {
-                Toast.makeText(this, etName.text.toString()+" "+ etPassword.text.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    etName.text.toString() + " " + etPassword.text.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

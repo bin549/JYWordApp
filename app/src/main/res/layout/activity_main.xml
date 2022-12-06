@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@color/teal_700"
+                android:background="@color/purple_500"
                 android:text="注册"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
