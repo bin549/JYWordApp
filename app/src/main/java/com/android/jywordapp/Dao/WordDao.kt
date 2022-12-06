@@ -15,8 +15,8 @@ interface WordDao {
     @Delete
     fun delete(wordEntity: WordEntity)
 
-    @Query("Select * from `word-table`")
-    fun fetchALlWords(): Flow<List<WordEntity>>
+    @Query("Select * from `word-table` where user_id=:userId")
+    fun fetchALlWords(userId: Int): Flow<List<WordEntity>>
 
     @Query("Select * from `word-table` where id=:id")
     fun fetchALlWordById(id: Int): Flow<WordEntity>

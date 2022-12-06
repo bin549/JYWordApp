@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.android.jywordapp.Constants
 import com.android.jywordapp.R
 import com.android.jywordapp.WordApp
 import com.android.jywordapp.model.UserEntity
@@ -30,16 +31,16 @@ class MainActivity : AppCompatActivity() {
             if (etName.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "用户名或者密码不能为空.", Toast.LENGTH_SHORT).show()
             } else {
-              val intent = Intent(this, WordEditor::class.java)
+                val intent = Intent(this, WordEditor::class.java)
                 GlobalScope.launch {
                     val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString())
                     if (user != null) {
+                        intent.putExtra(Constants.USER_ID, user.id)
                         startActivity(intent)
                     }
                 }
             }
         }
-
         buttonRegister.setOnClickListener {
             if (etName.text.toString().isNotEmpty() && etPassword.text.toString().isNotEmpty()) {
                 GlobalScope.launch {

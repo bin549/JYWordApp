@@ -10,5 +10,7 @@ data class WordEntity(
     val id: Int,
     val name: String = "",
     @ColumnInfo(name="explanation")
-    val explanation: String = ""
+    val explanation: String = "",
+    @ColumnInfo(name="user_id")
+    val userId: Int = 0,
 )

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.jywordapp.Constants
 import com.android.jywordapp.Dao.WordDao
 import com.android.jywordapp.R
 import com.android.jywordapp.WordApp
@@ -24,30 +25,32 @@ class WordEditor : AppCompatActivity() {
     private var binding: ActivityWordEditorBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val userId = intent.getIntExtra(Constants.USER_ID, 0)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word_editor)
         binding = ActivityWordEditorBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         val wordDao = (application as WordApp).db.wordDao()
         binding?.btnAdd?.setOnClickListener {
-            addRecord(wordDao)
+            addRecord(wordDao, userId)
         }
         lifecycleScope.launch {
-            wordDao.fetchALlWords().collect() {
+            wordDao.fetchALlWords(userId).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
-                setupListOfDataIntoRecyclerView(list, wordDao)
+                setupListOfDataIntoRecyclerView(list, wordDao, userId)
             }
         }
     }
 
     private fun setupListOfDataIntoRecyclerView(
         wordList: ArrayList<WordEntity>,
-        wordDao: WordDao
+        wordDao: WordDao,
+        userId: Int
     ) {
         if (wordList.isNotEmpty()) {
             val itemAdapter = ItemAdapter(wordList, { updateId ->
-                updateRecordDialog(updateId, wordDao)
+                updateRecordDialog(updateId, wordDao, userId)
             }) { deleteId ->
                 lifecycleScope.launch {
                     wordDao.fetchALlWordById(deleteId).collect {
@@ -93,7 +96,7 @@ class WordEditor : AppCompatActivity() {
         alertDialog.show()
     }
 
-    fun updateRecordDialog(id: Int, wordDao: WordDao) {
+    fun updateRecordDialog(id: Int, wordDao: WordDao, userId: Int) {
         val updateDialog = Dialog(this, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         val binding = DialogUpdateBinding.inflate(layoutInflater)
@@ -111,7 +114,7 @@ class WordEditor : AppCompatActivity() {
             val email = binding.etUpdateEmailId.text.toString()
             if (name.isNotEmpty() && email.isNotEmpty()) {
                 GlobalScope.launch {
-                    wordDao.update(WordEntity(id, name, email))
+                    wordDao.update(WordEntity(id, name, email, userId))
                 }
                 lifecycleScope.launch {
                     Toast.makeText(applicationContext, "Record Updated.", Toast.LENGTH_LONG)
@@ -133,7 +136,7 @@ class WordEditor : AppCompatActivity() {
     }
 
 
-    fun addRecord(wordDao: WordDao) {
+    fun addRecord(wordDao: WordDao, userId: Int) {
         val name = binding?.etName?.text.toString()
         val email = binding?.etEmailId?.text.toString()
         if (name.isNotEmpty() && email.isNotEmpty()) {
@@ -142,7 +145,8 @@ class WordEditor : AppCompatActivity() {
                     WordEntity(
                         id = Random.nextInt(),
                         name = name,
-                        explanation = email
+                        explanation = email,
+                        userId = userId
                     )
                 )
             }
