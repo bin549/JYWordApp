@@ -3,6 +3,7 @@ package com.android.jywordapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -29,12 +30,12 @@ class MainActivity : AppCompatActivity() {
             if (etName.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "用户名或者密码不能为空.", Toast.LENGTH_SHORT).show()
             } else {
-                val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString());
-                if (user != null) {
-                    val intent = Intent(this, WordEditor::class.java)
-                    startActivity(intent)
-                } else {
-                    println(123)
+              val intent = Intent(this, WordEditor::class.java)
+                GlobalScope.launch {
+                    val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString())
+                    if (user != null) {
+                        startActivity(intent)
+                    }
                 }
             }
         }

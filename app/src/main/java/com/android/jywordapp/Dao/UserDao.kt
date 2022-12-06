@@ -10,5 +10,5 @@ interface UserDao {
     fun insert(userEntity: UserEntity)
 
     @Query("Select * from `user-table` where username=:username and password=:password")
-    fun fetchUser(username: String, password: String): Flow<UserEntity>
+    fun fetchUser(username: String, password: String): UserEntity
 }
