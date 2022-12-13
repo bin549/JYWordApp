@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">JY Word App</string>
     <string name="image">image</string>
+    <string name="sign_up_title">注册界面</string>
+    <string name="sign_up">注册</string>
+    <string name="sign_up_description_text">JY掌上单词 欢迎你的加入</string>
+    <color name="secondary_text_color">#7A8089</color>
+    <string name="name">用户名</string>
+    <string name="password">密码</string>
+    <string name="email">邮箱</string>
+
 </resources>

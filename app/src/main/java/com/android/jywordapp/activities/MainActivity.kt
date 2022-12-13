@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             if (etName.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "用户名或者密码不能为空.", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this, WordEditor::class.java)
+                val intent = Intent(this@MainActivity, WordEditor::class.java)
                 GlobalScope.launch {
                     val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString())
                     if (user != null) {
@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         buttonRegister.setOnClickListener {
-            if (etName.text.toString().isNotEmpty() && etPassword.text.toString().isNotEmpty()) {
+          startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+
+            /* if (etName.text.toString().isNotEmpty() && etPassword.text.toString().isNotEmpty()) {
                 GlobalScope.launch {
                     userDao.insert(
                         UserEntity(
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     etName.text.toString() + " " + etPassword.text.toString(),
                     Toast.LENGTH_SHORT
                 ).show()
-            }
+            } */
         }
     }
 }

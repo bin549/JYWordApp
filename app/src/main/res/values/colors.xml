@@ -11,4 +11,6 @@
     <color name="colorLightGray">#EBEBEB</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="skyBlue">#94B8F7</color>
+    <color name="primary_text_color">#363A43</color>
+
 </resources>
