@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         buttonRegister.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+            startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
         }
     }
 }

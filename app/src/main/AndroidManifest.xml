@@ -14,7 +14,7 @@
         android:theme="@style/Theme.JYWordApp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.RegisterActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

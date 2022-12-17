@@ -1,6 +1,7 @@
 package com.android.jywordapp.activities
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,19 +13,27 @@ import androidx.core.content.ContextCompat
 import com.android.jywordapp.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_progress.*
+import android.os.CountDownTimer
+import com.android.jywordapp.WordApp
+import com.android.jywordapp.model.UserEntity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
-class SignUpActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     private lateinit var mProgressDialog: Dialog
+    private var restTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_register)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        val toolbar_sign_up_activity: Toolbar = findViewById(R.id.toolbar_sign_up_activity)
-        setupActionBar(toolbar_sign_up_activity)
+        val toolbar_register_activity: Toolbar = findViewById(R.id.toolbar_register_activity)
+        setupActionBar(toolbar_register_activity)
         var btn_sign_up: Button = findViewById(R.id.btn_sign_up)
         val et_name: AppCompatEditText = findViewById(R.id.et_username)
         val et_email: AppCompatEditText = findViewById(R.id.et_email)
@@ -34,14 +43,14 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupActionBar(toolbar_sign_up_activity: Toolbar) {
-        setSupportActionBar(toolbar_sign_up_activity)
+    private fun setupActionBar(toolbar_register_activity: Toolbar) {
+        setSupportActionBar(toolbar_register_activity)
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
-        toolbar_sign_up_activity.setNavigationOnClickListener { onBackPressed() }
+        toolbar_register_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun registerUser(
@@ -53,15 +62,23 @@ class SignUpActivity : AppCompatActivity() {
         val email: String = et_email.text.toString().trim { it <= ' ' }
         val password: String = et_password.text.toString().trim { it <= ' ' }
 
+        val userDao = (application as WordApp).db.userDao()
         if (validateForm(username, email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
-
-
-            hideProgressDialog()
+            GlobalScope.launch {
+                delay(1000)
+                userDao.insert(
+                    UserEntity(
+                        id = Random.nextInt(),
+                        username = username,
+                        email = email,
+                        password = password
+                    )
+                )
+                startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            }
+//            hideProgressDialog()
         }
-        println(username)
-        println(email)
-        println(password)
     }
 
     private fun validateForm(name: String, email: String, password: String): Boolean {
@@ -101,32 +118,10 @@ class SignUpActivity : AppCompatActivity() {
         val snackBarView = snackBar.view
         snackBarView.setBackgroundColor(
             ContextCompat.getColor(
-                this@SignUpActivity,
+                this@RegisterActivity,
                 R.color.skyBlue
             )
         )
         snackBar.show()
     }
 }
-/* if (etName.text.toString().isNotEmpty() && etPassword.text.toString().isNotEmpty()) {
-    GlobalScope.launch {
-        userDao.insert(
-            UserEntity(
-                id = Random.nextInt(),
-                username = etName.text.toString(),
-                password = etPassword.text.toString()
-            )
-        )
-    }
-    lifecycleScope.launch {
-        Toast.makeText(applicationContext, "用户注册成功", Toast.LENGTH_LONG).show()
-        etName?.text?.clear()
-        etPassword?.text?.clear()
-    }
-} else {
-    Toast.makeText(
-        this,
-        etName.text.toString() + " " + etPassword.text.toString(),
-        Toast.LENGTH_SHORT
-    ).show()
-} */
