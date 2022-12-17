@@ -8,5 +8,6 @@
     <string name="name">用户名</string>
     <string name="password">密码</string>
     <string name="email">邮箱</string>
+    <string name="please_wait">注册中，别急！&#8230;</string>
 
 </resources>
