@@ -5,29 +5,29 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="20dp">
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
-        android:text="修改单词"
+        android:text="添加单词信息"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tvNameLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="单词"
+        android:text="单词："
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/etUpdateName"
+        app:layout_constraintBottom_toBottomOf="@id/etName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etUpdateName" />
+        app:layout_constraintTop_toTopOf="@id/etName" />
     <EditText
-        android:id="@+id/etUpdateName"
+        android:id="@+id/etName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,23 +39,21 @@
         android:id="@+id/tvExplanationLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="释义"
+        android:text="释义："
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/etExplanation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/etExplanation" />
-
     <EditText
         android:id="@+id/etExplanation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="请输入单词解释"
-        android:inputType="textLongMessage"
-        android:singleLine="false"
+        android:hint="请输入单词释义"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvExplanationLabel"
-        app:layout_constraintTop_toBottomOf="@id/etUpdateName" />
+        app:layout_constraintTop_toBottomOf="@id/etName" />
     <TextView
         android:id="@+id/tvUpdate"
         android:layout_width="wrap_content"
@@ -63,7 +61,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:padding="10dp"
-        android:text="确定"
+        android:text="确认"
         android:textColor="@android:color/holo_red_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/tvCancel"

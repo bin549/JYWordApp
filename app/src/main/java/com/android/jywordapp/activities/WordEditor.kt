@@ -15,10 +15,12 @@ import com.android.jywordapp.R
 import com.android.jywordapp.WordApp
 import com.android.jywordapp.adapters.ItemAdapter
 import com.android.jywordapp.databinding.ActivityWordEditorBinding
+import com.android.jywordapp.databinding.DialogAddBinding
 import com.android.jywordapp.databinding.DialogUpdateBinding
 import com.android.jywordapp.model.WordEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class WordEditor : AppCompatActivity() {
     private var binding: ActivityWordEditorBinding? = null
@@ -37,7 +39,7 @@ class WordEditor : AppCompatActivity() {
         }
         val wordDao = (application as WordApp).db.wordDao()
         binding?.btnAdd?.setOnClickListener {
-            addRecord(wordDao, userId)
+            addRecordDialog(wordDao, userId)
         }
         lifecycleScope.launch {
             wordDao.fetchALlWords(userId).collect() {
@@ -55,9 +57,11 @@ class WordEditor : AppCompatActivity() {
         userId: Int
     ) {
         if (wordList.isNotEmpty()) {
-            val itemAdapter = ItemAdapter(wordList, { updateId ->
-                updateRecordDialog(updateId, wordDao, userId)
-            }) { deleteId ->
+            val itemAdapter = ItemAdapter(wordList,
+                { updateId ->
+                    updateRecordDialog(updateId, wordDao, userId)
+                })
+            { deleteId ->
                 lifecycleScope.launch {
                     wordDao.fetchALlWordById(deleteId).collect {
                         if (it != null) {
@@ -78,8 +82,8 @@ class WordEditor : AppCompatActivity() {
 
     fun deleteRecordAlertDialog(id: Int, wordDao: WordDao, word: WordEntity) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Delete Record")
-        builder.setMessage("Are you sure you wants to delete ${word.name}.")
+        builder.setTitle("删除单词")
+        builder.setMessage("你确定要删除单词 - （${word.name}）.")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton("Yes") { dialogInterface, _ ->
             GlobalScope.launch {
@@ -88,7 +92,7 @@ class WordEditor : AppCompatActivity() {
             lifecycleScope.launch {
                 Toast.makeText(
                     applicationContext,
-                    "Record deleted successfully.",
+                    "删除单词成功.",
                     Toast.LENGTH_LONG
                 ).show()
                 dialogInterface.dismiss()
@@ -102,6 +106,50 @@ class WordEditor : AppCompatActivity() {
         alertDialog.show()
     }
 
+    fun addRecordDialog(wordDao: WordDao, userId: Int) {
+        val addDialog = Dialog(this, R.style.Theme_Dialog)
+        addDialog.setCancelable(false)
+        val binding = DialogAddBinding.inflate(layoutInflater)
+        addDialog.setContentView(binding.root)
+
+        binding.tvUpdate.setOnClickListener {
+            val name = binding?.etName?.text.toString()
+            val explanation = binding?.etExplanation?.text.toString()
+            if (name.isNotEmpty() && explanation.isNotEmpty()) {
+                GlobalScope.launch {
+                    wordDao.insert(
+                        WordEntity(
+                            id = Random.nextInt(),
+                            name = name,
+                            explanation = explanation,
+                            userId = userId
+                        )
+                    )
+                }
+                lifecycleScope.launch {
+                    Toast.makeText(applicationContext, "Record saved", Toast.LENGTH_LONG).show()
+                    binding?.etName?.text?.clear()
+                    binding?.etExplanation?.text?.clear()
+                }
+                lifecycleScope.launch {
+                    Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
+                        .show()
+                    addDialog.dismiss()
+                }
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "单词或者释义不能为空",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        binding.tvCancel.setOnClickListener {
+            addDialog.dismiss()
+        }
+        addDialog.show()
+    }
+
     fun updateRecordDialog(id: Int, wordDao: WordDao, userId: Int) {
         val updateDialog = Dialog(this, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
@@ -111,19 +159,19 @@ class WordEditor : AppCompatActivity() {
             wordDao.fetchALlWordById(id).collect {
                 if (it != null) {
                     binding.etUpdateName.setText(it.name)
-                    binding.etUpdateEmailId.setText(it.explanation)
+                    binding.etExplanation.setText(it.explanation)
                 }
             }
         }
         binding.tvUpdate.setOnClickListener {
             val name = binding.etUpdateName.text.toString()
-            val email = binding.etUpdateEmailId.text.toString()
+            val email = binding.etExplanation.text.toString()
             if (name.isNotEmpty() && email.isNotEmpty()) {
                 GlobalScope.launch {
                     wordDao.update(WordEntity(id, name, email, userId))
                 }
                 lifecycleScope.launch {
-                    Toast.makeText(applicationContext, "Record Updated.", Toast.LENGTH_LONG)
+                    Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
                         .show()
                     updateDialog.dismiss()
                 }
@@ -139,35 +187,5 @@ class WordEditor : AppCompatActivity() {
             updateDialog.dismiss()
         }
         updateDialog.show()
-    }
-
-
-    fun addRecord(wordDao: WordDao, userId: Int) {
-        println(userId)
-//        val name = binding?.etName?.text.toString()
-//        val email = binding?.etEmailId?.text.toString()
-//        if (name.isNotEmpty() && email.isNotEmpty()) {
-//            GlobalScope.launch {
-//                wordDao.insert(
-//                    WordEntity(
-//                        id = Random.nextInt(),
-//                        name = name,
-//                        explanation = email,
-//                        userId = userId
-//                    )
-//                )
-//            }
-//            lifecycleScope.launch {
-//                Toast.makeText(applicationContext, "Record saved", Toast.LENGTH_LONG).show()
-//                binding?.etName?.text?.clear()
-//                binding?.etEmailId?.text?.clear()
-//            }
-//        } else {
-//            Toast.makeText(
-//                applicationContext,
-//                "Name or Email cannot be blank",
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
     }
 }
