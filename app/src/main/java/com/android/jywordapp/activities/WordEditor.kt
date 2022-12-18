@@ -5,8 +5,10 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.jywordapp.Constants
 import com.android.jywordapp.Dao.WordDao
 import com.android.jywordapp.R
@@ -34,13 +36,14 @@ class WordEditor : AppCompatActivity() {
             onBackPressed()
         }
         val wordDao = (application as WordApp).db.wordDao()
-//        binding?.btnAdd?.setOnClickListener {
-//            addRecord(wordDao, userId)
-//        }
+        binding?.btnAdd?.setOnClickListener {
+            addRecord(wordDao, userId)
+        }
         lifecycleScope.launch {
             wordDao.fetchALlWords(userId).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
+                println(list)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
             }
         }
@@ -63,13 +66,13 @@ class WordEditor : AppCompatActivity() {
                     }
                 }
             }
-//            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
-//            binding?.rvItemsList?.adapter = itemAdapter
-//            binding?.rvItemsList?.visibility = View.VISIBLE
-//            binding?.tvNoRecordsAvailable?.visibility = View.GONE
+            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
+            binding?.rvItemsList?.adapter = itemAdapter
+            binding?.rvItemsList?.visibility = View.VISIBLE
+            binding?.tvNoRecordsAvailable?.visibility = View.GONE
         } else {
-//            binding?.rvItemsList?.visibility = View.GONE
-//            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
+            binding?.rvItemsList?.visibility = View.GONE
+            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
         }
     }
 
@@ -139,7 +142,8 @@ class WordEditor : AppCompatActivity() {
     }
 
 
-//    fun addRecord(wordDao: WordDao, userId: Int) {
+    fun addRecord(wordDao: WordDao, userId: Int) {
+        println(userId)
 //        val name = binding?.etName?.text.toString()
 //        val email = binding?.etEmailId?.text.toString()
 //        if (name.isNotEmpty() && email.isNotEmpty()) {
@@ -165,5 +169,5 @@ class WordEditor : AppCompatActivity() {
 //                Toast.LENGTH_LONG
 //            ).show()
 //        }
-//    }
+    }
 }

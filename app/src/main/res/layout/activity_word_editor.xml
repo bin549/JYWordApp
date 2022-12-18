@@ -88,7 +88,7 @@
         android:layout_margin="10dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="所有单词."
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -120,7 +120,7 @@
     <!--    app:layout_constraintTop_toBottomOf="@id/btnAdd"-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddHappyPlace"
+        android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

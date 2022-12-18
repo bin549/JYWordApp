@@ -21,7 +21,8 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
+        val wordEditorIntent = Intent(this@ProfileActivity, WordEditor::class.java)
+        wordEditorIntent.putExtra(Constants.USER_ID, intent.getIntExtra(Constants.USER_ID,0))
         var ivCountdown: ImageView = findViewById(R.id.iv_countdown)
         var vocabularyCard: CardView = findViewById(R.id.vocabularyCard)
         var onlineCard: CardView = findViewById(R.id.onlineCard)
@@ -93,7 +94,7 @@ class ProfileActivity : AppCompatActivity() {
             builder.show()
         }
         wordCard.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, WordEditor::class.java))
+            startActivity(wordEditorIntent)
         }
         quizCard.setOnClickListener {
             startActivity(Intent(this@ProfileActivity, QuizActivity::class.java))
