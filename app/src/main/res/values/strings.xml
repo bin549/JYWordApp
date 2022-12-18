@@ -10,5 +10,6 @@
     <string name="email">邮箱</string>
     <string name="please_wait">注册中，别急！&#8230;</string>
     <string name="image_contentDescription">图片</string>
+    <string name="alert">在线</string>
 
 </resources>

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
                     val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString())
                     if (user != null) {
                         intent.putExtra(Constants.USER_ID, user.id)
+                        intent.putExtra(Constants.USER_Name, user.username)
                         startActivity(intent)
                     }
                 }
