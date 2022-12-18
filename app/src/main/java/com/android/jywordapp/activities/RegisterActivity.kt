@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                         password = password
                     )
                 )
-                startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+                startActivity(Intent(this@RegisterActivity, ProfileActivity::class.java))
             }
 //            hideProgressDialog()
         }

@@ -5,10 +5,8 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.jywordapp.Constants
 import com.android.jywordapp.Dao.WordDao
 import com.android.jywordapp.R
@@ -19,7 +17,6 @@ import com.android.jywordapp.databinding.DialogUpdateBinding
 import com.android.jywordapp.model.WordEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class WordEditor : AppCompatActivity() {
     private var binding: ActivityWordEditorBinding? = null
@@ -32,7 +29,7 @@ class WordEditor : AppCompatActivity() {
         setSupportActionBar(binding?.toolbarWordEditorActivity)
         setContentView(binding?.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "单词本"
+        supportActionBar?.title = "个人空间"
         binding?.toolbarWordEditorActivity?.setNavigationOnClickListener {
             onBackPressed()
         }

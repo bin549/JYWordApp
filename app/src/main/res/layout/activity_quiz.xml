@@ -5,23 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".activities.WordsActivity">
+    tools:context=".activities.QuizActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center|top"
         android:orientation="vertical"
         android:padding="16dp">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_quiz_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:gravity="center"
             android:textColor="#363A43"
-            android:textSize="22sp"
-            tools:text="What country does this flag belong to?" />
+            android:textSize="60sp"
+            tools:text="Design" />
 
         <LinearLayout
             android:layout_width="match_parent"
