@@ -29,11 +29,17 @@ class WordEditor : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word_editor)
         binding = ActivityWordEditorBinding.inflate(layoutInflater)
+        setSupportActionBar(binding?.toolbarWordEditorActivity)
         setContentView(binding?.root)
-        val wordDao = (application as WordApp).db.wordDao()
-        binding?.btnAdd?.setOnClickListener {
-            addRecord(wordDao, userId)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "单词本"
+        binding?.toolbarWordEditorActivity?.setNavigationOnClickListener {
+            onBackPressed()
         }
+        val wordDao = (application as WordApp).db.wordDao()
+//        binding?.btnAdd?.setOnClickListener {
+//            addRecord(wordDao, userId)
+//        }
         lifecycleScope.launch {
             wordDao.fetchALlWords(userId).collect() {
                 Log.d("word", "$it")
@@ -60,13 +66,13 @@ class WordEditor : AppCompatActivity() {
                     }
                 }
             }
-            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
-            binding?.rvItemsList?.adapter = itemAdapter
-            binding?.rvItemsList?.visibility = View.VISIBLE
-            binding?.tvNoRecordsAvailable?.visibility = View.GONE
+//            binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
+//            binding?.rvItemsList?.adapter = itemAdapter
+//            binding?.rvItemsList?.visibility = View.VISIBLE
+//            binding?.tvNoRecordsAvailable?.visibility = View.GONE
         } else {
-            binding?.rvItemsList?.visibility = View.GONE
-            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
+//            binding?.rvItemsList?.visibility = View.GONE
+//            binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
         }
     }
 
@@ -136,31 +142,31 @@ class WordEditor : AppCompatActivity() {
     }
 
 
-    fun addRecord(wordDao: WordDao, userId: Int) {
-        val name = binding?.etName?.text.toString()
-        val email = binding?.etEmailId?.text.toString()
-        if (name.isNotEmpty() && email.isNotEmpty()) {
-            GlobalScope.launch {
-                wordDao.insert(
-                    WordEntity(
-                        id = Random.nextInt(),
-                        name = name,
-                        explanation = email,
-                        userId = userId
-                    )
-                )
-            }
-            lifecycleScope.launch {
-                Toast.makeText(applicationContext, "Record saved", Toast.LENGTH_LONG).show()
-                binding?.etName?.text?.clear()
-                binding?.etEmailId?.text?.clear()
-            }
-        } else {
-            Toast.makeText(
-                applicationContext,
-                "Name or Email cannot be blank",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
+//    fun addRecord(wordDao: WordDao, userId: Int) {
+//        val name = binding?.etName?.text.toString()
+//        val email = binding?.etEmailId?.text.toString()
+//        if (name.isNotEmpty() && email.isNotEmpty()) {
+//            GlobalScope.launch {
+//                wordDao.insert(
+//                    WordEntity(
+//                        id = Random.nextInt(),
+//                        name = name,
+//                        explanation = email,
+//                        userId = userId
+//                    )
+//                )
+//            }
+//            lifecycleScope.launch {
+//                Toast.makeText(applicationContext, "Record saved", Toast.LENGTH_LONG).show()
+//                binding?.etName?.text?.clear()
+//                binding?.etEmailId?.text?.clear()
+//            }
+//        } else {
+//            Toast.makeText(
+//                applicationContext,
+//                "Name or Email cannot be blank",
+//                Toast.LENGTH_LONG
+//            ).show()
+//        }
+//    }
 }

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             if (etName.text.toString().isEmpty() || etPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "用户名或者密码不能为空.", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this@MainActivity, WordEditor::class.java)
+                val intent = Intent(this@MainActivity, ProfileActivity::class.java)
                 GlobalScope.launch {
                     val user = userDao.fetchUser(etName.text.toString(), etPassword.text.toString())
                     if (user != null) {
