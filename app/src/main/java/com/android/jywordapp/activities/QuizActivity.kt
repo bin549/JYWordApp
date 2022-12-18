@@ -19,6 +19,5 @@ class QuizActivity : AppCompatActivity() {
         binding?.toolbarQuizActivity?.setNavigationOnClickListener {
             onBackPressed()
         }
-
     }
 }
