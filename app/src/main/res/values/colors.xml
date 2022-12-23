@@ -17,5 +17,8 @@
     <color name="main_screen_content_background_color">#EFEFEF</color>
     <color name="divider_background">#e0e0e0</color>
     <color name="colorAccent">#008F24</color>
+    <color name="ColorWhite">#ffffff</color>
+    <color name="colorPrimaryDark">#10141C</color>
+    <color name="ColorGray">#CACACA</color>
 
 </resources>

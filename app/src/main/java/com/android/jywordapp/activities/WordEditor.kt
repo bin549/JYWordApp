@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,8 @@ import com.android.jywordapp.databinding.DialogUpdateBinding
 import com.android.jywordapp.model.WordEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class WordEditor : AppCompatActivity() {
@@ -41,12 +44,27 @@ class WordEditor : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             addRecordDialog(wordDao, userId)
         }
+        val search_view : SearchView = findViewById(R.id.search_view)
         lifecycleScope.launch {
             wordDao.fetchALlWords(userId).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
-                println(list)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
+                search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(p0: String?): Boolean {
+                        return true
+                    }
+                    override fun onQueryTextChange(p0: String?): Boolean {
+                        var tempArr = ArrayList<WordEntity>()
+                        for (arr in list){
+                            if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                                tempArr.add(arr)
+                            }
+                        }
+                        setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
+                        return true
+                    }
+                })
             }
         }
     }

@@ -2,7 +2,6 @@ package com.android.jywordapp.Dao
 
 import androidx.room.*
 import com.android.jywordapp.model.UserEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {

@@ -11,5 +11,6 @@
     <string name="please_wait">注册中，别急！&#8230;</string>
     <string name="image_contentDescription">图片</string>
     <string name="alert">在线</string>
+    <string name="search">搜索</string>
 
 </resources>
