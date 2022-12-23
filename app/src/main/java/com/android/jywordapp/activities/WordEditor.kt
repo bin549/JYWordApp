@@ -2,6 +2,7 @@ package com.android.jywordapp.activities
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -44,9 +45,10 @@ class WordEditor : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             addRecordDialog(wordDao, userId)
         }
+        var isKnown : Int = 0
         val search_view : SearchView = findViewById(R.id.search_view)
         lifecycleScope.launch {
-            wordDao.fetchALlWords(userId).collect() {
+            wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
@@ -65,6 +67,57 @@ class WordEditor : AppCompatActivity() {
                         return true
                     }
                 })
+            }
+        }
+        binding?.rbAllWords?.setOnCheckedChangeListener { _, checkedId: Int ->
+            if (checkedId == R.id.rbKnownWords) {
+                isKnown = 0
+                lifecycleScope.launch {
+                    wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+                        Log.d("word", "$it")
+                        val list = ArrayList(it)
+                        setupListOfDataIntoRecyclerView(list, wordDao, userId)
+                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                            override fun onQueryTextSubmit(p0: String?): Boolean {
+                                return true
+                            }
+                            override fun onQueryTextChange(p0: String?): Boolean {
+                                var tempArr = ArrayList<WordEntity>()
+                                for (arr in list){
+                                    if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                                        tempArr.add(arr)
+                                    }
+                                }
+                                setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
+                                return true
+                            }
+                        })
+                    }
+                }
+            } else {
+                isKnown = 1
+                lifecycleScope.launch {
+                    wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+                        Log.d("word", "$it")
+                        val list = ArrayList(it)
+                        setupListOfDataIntoRecyclerView(list, wordDao, userId)
+                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                            override fun onQueryTextSubmit(p0: String?): Boolean {
+                                return true
+                            }
+                            override fun onQueryTextChange(p0: String?): Boolean {
+                                var tempArr = ArrayList<WordEntity>()
+                                for (arr in list){
+                                    if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                                        tempArr.add(arr)
+                                    }
+                                }
+                                setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
+                                return true
+                            }
+                        })
+                    }
+                }
             }
         }
     }
@@ -97,6 +150,7 @@ class WordEditor : AppCompatActivity() {
             binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
         }
     }
+
 
     fun deleteRecordAlertDialog(id: Int, wordDao: WordDao, word: WordEntity) {
         val builder = AlertDialog.Builder(this)

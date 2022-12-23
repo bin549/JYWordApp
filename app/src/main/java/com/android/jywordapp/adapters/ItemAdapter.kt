@@ -27,7 +27,7 @@ class ItemAdapter(
         val context = holder.itemView.context
         val item = items[position]
         holder.tvName.text = item.name
-        holder.tvEmail.text = item.explanation
+        holder.tvExplanation.text = item.explanation
         if (position % 2 == 0) {
             holder.llMain.setBackgroundColor(
                 ContextCompat.getColor(
@@ -54,7 +54,7 @@ class ItemAdapter(
     class ViewHolder(binding: ItemsRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val llMain = binding.llMain
         val tvName = binding.tvName
-        val tvEmail = binding.tvEmail
+        val tvExplanation = binding.tvExplanation
         val ivEdit = binding.ivEdit
         val ivDelete = binding.ivDelete
     }

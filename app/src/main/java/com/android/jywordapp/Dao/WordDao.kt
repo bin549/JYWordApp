@@ -18,6 +18,9 @@ interface WordDao {
     @Query("Select * from `word-table` where user_id=:userId")
     fun fetchALlWords(userId: Int): Flow<List<WordEntity>>
 
+    @Query("Select * from `word-table` where user_id=:userId and is_kown=:isKnown")
+    fun fetchWordsByIsKnown(userId: Int, isKnown: Int): Flow<List<WordEntity>>
+
     @Query("Select * from `word-table` where id=:id")
     fun fetchALlWordById(id: Int): Flow<WordEntity>
 }

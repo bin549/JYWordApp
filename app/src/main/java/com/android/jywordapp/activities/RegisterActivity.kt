@@ -14,6 +14,7 @@ import com.android.jywordapp.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_progress.*
 import android.os.CountDownTimer
+import com.android.jywordapp.Constants
 import com.android.jywordapp.WordApp
 import com.android.jywordapp.model.UserEntity
 import kotlinx.coroutines.GlobalScope
@@ -66,16 +67,20 @@ class RegisterActivity : AppCompatActivity() {
         if (validateForm(username, email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
             GlobalScope.launch {
+                var randomId : Int = Random.nextInt();
                 delay(1000)
                 userDao.insert(
                     UserEntity(
-                        id = Random.nextInt(),
+                        id = randomId,
                         username = username,
                         email = email,
                         password = password
                     )
                 )
-                startActivity(Intent(this@RegisterActivity, ProfileActivity::class.java))
+                val intent = Intent(this@RegisterActivity, ProfileActivity::class.java)
+                intent.putExtra(Constants.USER_ID, randomId)
+                intent.putExtra(Constants.USER_Name, username)
+                startActivity(intent)
             }
 //            hideProgressDialog()
         }
