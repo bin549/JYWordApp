@@ -23,4 +23,7 @@ interface WordDao {
 
     @Query("Select * from `word-table` where id=:id")
     fun fetchALlWordById(id: Int): Flow<WordEntity>
+
+    @Query("Select count(*) from `word-table` where user_id=:userId and is_kown=1")
+    fun countKnownWordById(userId: Int): Flow<Int>
 }

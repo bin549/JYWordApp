@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +14,10 @@ import com.android.jywordapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
+import com.android.jywordapp.WordApp
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
@@ -58,6 +63,7 @@ class ProfileActivity : AppCompatActivity() {
         tvCountdownTime.text = "还48天"
         tvSentence.text = "句子迷"
         tvLock.text = "开发中"
+
 
         dateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
