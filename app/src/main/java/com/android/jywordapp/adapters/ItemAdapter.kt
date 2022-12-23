@@ -10,6 +10,7 @@ import com.android.jywordapp.model.WordEntity
 
 class ItemAdapter(
     private val items: ArrayList<WordEntity>,
+    private val changeListener: (id: Int) -> Unit,
     private val updateListener: (id: Int) -> Unit,
     private val deleteListener: (id: Int) -> Unit
 ) :
@@ -38,6 +39,9 @@ class ItemAdapter(
         } else {
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
         }
+        holder.ivChange.setOnClickListener {
+            changeListener(item.id)
+        }
         holder.ivEdit.setOnClickListener {
             updateListener(item.id)
         }
@@ -55,6 +59,7 @@ class ItemAdapter(
         val llMain = binding.llMain
         val tvName = binding.tvName
         val tvExplanation = binding.tvExplanation
+        val ivChange = binding.ivChange
         val ivEdit = binding.ivEdit
         val ivDelete = binding.ivDelete
     }

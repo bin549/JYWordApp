@@ -45,21 +45,23 @@ class WordEditor : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             addRecordDialog(wordDao, userId)
         }
-        var isKnown : Int = 0
-        val search_view : SearchView = findViewById(R.id.search_view)
+        var isKnown: Int = 0
+        val search_view: SearchView = findViewById(R.id.search_view)
         lifecycleScope.launch {
             wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
-                search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(p0: String?): Boolean {
                         return true
                     }
                     override fun onQueryTextChange(p0: String?): Boolean {
                         var tempArr = ArrayList<WordEntity>()
-                        for (arr in list){
-                            if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                        for (arr in list) {
+                            if (arr.name!!.toLowerCase(Locale.getDefault())
+                                    .contains(p0.toString())
+                            ) {
                                 tempArr.add(arr)
                             }
                         }
@@ -77,14 +79,17 @@ class WordEditor : AppCompatActivity() {
                         Log.d("word", "$it")
                         val list = ArrayList(it)
                         setupListOfDataIntoRecyclerView(list, wordDao, userId)
-                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                             override fun onQueryTextSubmit(p0: String?): Boolean {
                                 return true
                             }
+
                             override fun onQueryTextChange(p0: String?): Boolean {
                                 var tempArr = ArrayList<WordEntity>()
-                                for (arr in list){
-                                    if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                                for (arr in list) {
+                                    if (arr.name!!.toLowerCase(Locale.getDefault())
+                                            .contains(p0.toString())
+                                    ) {
                                         tempArr.add(arr)
                                     }
                                 }
@@ -101,14 +106,17 @@ class WordEditor : AppCompatActivity() {
                         Log.d("word", "$it")
                         val list = ArrayList(it)
                         setupListOfDataIntoRecyclerView(list, wordDao, userId)
-                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                             override fun onQueryTextSubmit(p0: String?): Boolean {
                                 return true
                             }
+
                             override fun onQueryTextChange(p0: String?): Boolean {
                                 var tempArr = ArrayList<WordEntity>()
-                                for (arr in list){
-                                    if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                                for (arr in list) {
+                                    if (arr.name!!.toLowerCase(Locale.getDefault())
+                                            .contains(p0.toString())
+                                    ) {
                                         tempArr.add(arr)
                                     }
                                 }
@@ -129,18 +137,21 @@ class WordEditor : AppCompatActivity() {
     ) {
         if (wordList.isNotEmpty()) {
             val itemAdapter = ItemAdapter(wordList,
+                { changeId ->
+                    changeRecordDialog(changeId, wordDao, userId)
+                },
                 { updateId ->
                     updateRecordDialog(updateId, wordDao, userId)
-                })
-            { deleteId ->
-                lifecycleScope.launch {
-                    wordDao.fetchALlWordById(deleteId).collect {
-                        if (it != null) {
-                            deleteRecordAlertDialog(deleteId, wordDao, it)
+                },
+                { deleteId ->
+                    lifecycleScope.launch {
+                        wordDao.fetchALlWordById(deleteId).collect {
+                            if (it != null) {
+                                deleteRecordAlertDialog(deleteId, wordDao, it)
+                            }
                         }
                     }
-                }
-            }
+                })
             binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
             binding?.rvItemsList?.adapter = itemAdapter
             binding?.rvItemsList?.visibility = View.VISIBLE
@@ -151,6 +162,28 @@ class WordEditor : AppCompatActivity() {
         }
     }
 
+    fun changeRecordDialog(id: Int, wordDao: WordDao, userId: Int) {
+//        val changeDialog = Dialog(this, R.style.Theme_Dialog)
+//        changeDialog.setCancelable(false)
+//        val binding = DialogUpdateBinding.inflate(layoutInflater)
+//        changeDialog.setContentView(binding.root)
+//        GlobalScope.launch {
+//            wordDao.fetchALlWordById(id).collect {
+//                if (it != null) {
+//                    wordDao.update(WordEntity(id, it.name, it.explanation, userId, 1))
+//                }
+//            }
+//        }
+//        lifecycleScope.launch {
+//            Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
+//                .show()
+//            changeDialog.dismiss()
+//        }
+//        binding.tvCancel.setOnClickListener {
+//            changeDialog.dismiss()
+//        }
+//        changeDialog.show()
+    }
 
     fun deleteRecordAlertDialog(id: Int, wordDao: WordDao, word: WordEntity) {
         val builder = AlertDialog.Builder(this)

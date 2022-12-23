@@ -13,7 +13,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <androidx.cardview.widget.CardView
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/default_option_border_bg"
+                android:background="@android:drawable/screen_background_light"
                 android:orientation="horizontal">
 
                 <TextView
@@ -51,13 +51,14 @@
                     tools:text="Explanation" />
 
                 <ImageView
-                    android:id="@+id/ivKnow"
+                    android:id="@+id/ivChange"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:contentDescription="image"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="center"
-                    android:src="@drawable/ic_action_edit" />
+                    android:src="@drawable/ic_action_add_24dp" />
+
                 <ImageView
                     android:id="@+id/ivEdit"
                     android:layout_width="50dp"
