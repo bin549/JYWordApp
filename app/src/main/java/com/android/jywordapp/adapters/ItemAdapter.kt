@@ -12,7 +12,7 @@ class ItemAdapter(
     private val items: ArrayList<WordEntity>,
     private val changeListener: (id: Int) -> Unit,
     private val updateListener: (id: Int) -> Unit,
-    private val deleteListener: (id: Int) -> Unit
+    private val deleteListener: (id: Int) -> Unit,
 ) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
@@ -28,7 +28,7 @@ class ItemAdapter(
         val context = holder.itemView.context
         val item = items[position]
         holder.tvName.text = item.name
-        holder.tvExplanation.text = item.explanation
+        holder.tvExplanation.text = "点击查看释义"
         if (position % 2 == 0) {
             holder.llMain.setBackgroundColor(
                 ContextCompat.getColor(
@@ -39,6 +39,7 @@ class ItemAdapter(
         } else {
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
         }
+
         holder.ivChange.setOnClickListener {
             changeListener(item.id)
         }
@@ -47,6 +48,9 @@ class ItemAdapter(
         }
         holder.ivDelete.setOnClickListener {
             deleteListener(item.id)
+        }
+        holder.cvExplanationCheck.setOnClickListener {
+            holder.tvExplanation.text = item.explanation
         }
     }
 
@@ -58,6 +62,7 @@ class ItemAdapter(
     class ViewHolder(binding: ItemsRowBinding) : RecyclerView.ViewHolder(binding.root) {
         val llMain = binding.llMain
         val tvName = binding.tvName
+        val cvExplanationCheck = binding.cvExplanationCheck
         val tvExplanation = binding.tvExplanation
         val ivChange = binding.ivChange
         val ivEdit = binding.ivEdit

@@ -151,9 +151,11 @@ class WordEditor : AppCompatActivity() {
                             }
                         }
                     }
-                })
+                }
+                    )
             binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
             binding?.rvItemsList?.adapter = itemAdapter
+            println(binding?.rvItemsList?.adapter)
             binding?.rvItemsList?.visibility = View.VISIBLE
             binding?.tvNoRecordsAvailable?.visibility = View.GONE
         } else {
