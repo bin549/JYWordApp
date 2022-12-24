@@ -16,14 +16,14 @@ interface WordDao {
     fun delete(wordEntity: WordEntity)
 
     @Query("Select * from `word-table` where user_id=:userId")
-    fun fetchALlWords(userId: Int): Flow<List<WordEntity>>
+    fun fetchAllWords(userId: Int): Flow<List<WordEntity>>
 
-    @Query("Select * from `word-table` where user_id=:userId and is_kown=:isKnown")
+    @Query("Select * from `word-table` where user_id=:userId and is_known=:isKnown order by id desc")
     fun fetchWordsByIsKnown(userId: Int, isKnown: Int): Flow<List<WordEntity>>
 
     @Query("Select * from `word-table` where id=:id")
-    fun fetchALlWordById(id: Int): Flow<WordEntity>
+    fun fetchAllWordById(id: Int): Flow<WordEntity>
 
-    @Query("Select count(*) from `word-table` where user_id=:userId and is_kown=1")
+    @Query("Select count(*) from `word-table` where user_id=:userId and is_known=1")
     fun countKnownWordById(userId: Int): Flow<Int>
 }

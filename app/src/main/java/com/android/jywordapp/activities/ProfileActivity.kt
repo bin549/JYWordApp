@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,10 +13,6 @@ import com.android.jywordapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.lifecycleScope
-import com.android.jywordapp.WordApp
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
@@ -29,8 +24,6 @@ class ProfileActivity : AppCompatActivity() {
         val wordEditorIntent = Intent(this@ProfileActivity, WordEditor::class.java)
         wordEditorIntent.putExtra(Constants.USER_ID, intent.getIntExtra(Constants.USER_ID,0))
         var ivCountdown: ImageView = findViewById(R.id.iv_countdown)
-        var vocabularyCard: CardView = findViewById(R.id.vocabularyCard)
-        var onlineCard: CardView = findViewById(R.id.onlineCard)
         var wordCard: CardView = findViewById(R.id.wordCard)
         var quizCard: CardView = findViewById(R.id.quizCard)
         var sentenceCard: CardView = findViewById(R.id.sentenceCard)
@@ -54,6 +47,9 @@ class ProfileActivity : AppCompatActivity() {
         tvIntro.text = "个人简介：" + "这个人很懒，啥也没写。"
         tvWord.text = "单词本"
         tvVocabulary.text = "词汇量"
+
+
+
         tvVocabularyQuantity.text = "12个"
         tvOnline.text = "累计在线"
         tvOnlineQuantity.text = "42天"
@@ -63,7 +59,6 @@ class ProfileActivity : AppCompatActivity() {
         tvCountdownTime.text = "还48天"
         tvSentence.text = "句子迷"
         tvLock.text = "开发中"
-
 
         dateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -79,25 +74,6 @@ class ProfileActivity : AppCompatActivity() {
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
             ).show()
-        }
-        vocabularyCard.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle("警告")
-            alertDialog.setIcon(android.R.drawable.ic_dialog_alert)
-            val dialogItems = arrayOf("别急！别急！别急！别急！")
-            alertDialog.setItems(dialogItems) { dialog, which ->
-                when (which) {
-                    0 -> choosePhotoFromGallery()
-                }
-            }
-            alertDialog.show()
-        }
-        onlineCard.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setIcon(android.R.drawable.arrow_up_float)
-            builder.setTitle(resources.getString(R.string.alert))
-            builder.setMessage("感恩有你。")
-            builder.show()
         }
         wordCard.setOnClickListener {
             startActivity(wordEditorIntent)
@@ -119,10 +95,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-
     private fun updateDateInView() {
         val myFormat = "dd.MM.yyyy"
-        val sdf = SimpleDateFormat(myFormat, Locale.getDefault()) // A date format
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
 //        et_date.setText(sdf.format(cal.time).toString()) // A selected date using format which we have used is set to the UI.
     }
 

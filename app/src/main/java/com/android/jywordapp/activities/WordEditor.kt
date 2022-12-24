@@ -45,10 +45,9 @@ class WordEditor : AppCompatActivity() {
         binding?.btnAdd?.setOnClickListener {
             addRecordDialog(wordDao, userId)
         }
-        var isKnown: Int = 0
         val search_view: SearchView = findViewById(R.id.search_view)
         lifecycleScope.launch {
-            wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+            wordDao.fetchWordsByIsKnown(userId, 0).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
@@ -59,8 +58,7 @@ class WordEditor : AppCompatActivity() {
                     override fun onQueryTextChange(p0: String?): Boolean {
                         var tempArr = ArrayList<WordEntity>()
                         for (arr in list) {
-                            if (arr.name!!.toLowerCase(Locale.getDefault())
-                                    .contains(p0.toString())
+                            if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())
                             ) {
                                 tempArr.add(arr)
                             }
@@ -73,9 +71,8 @@ class WordEditor : AppCompatActivity() {
         }
         binding?.rbAllWords?.setOnCheckedChangeListener { _, checkedId: Int ->
             if (checkedId == R.id.rbKnownWords) {
-                isKnown = 0
                 lifecycleScope.launch {
-                    wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+                    wordDao.fetchWordsByIsKnown(userId, 0).collect() {
                         Log.d("word", "$it")
                         val list = ArrayList(it)
                         setupListOfDataIntoRecyclerView(list, wordDao, userId)
@@ -100,9 +97,8 @@ class WordEditor : AppCompatActivity() {
                     }
                 }
             } else {
-                isKnown = 1
                 lifecycleScope.launch {
-                    wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+                    wordDao.fetchWordsByIsKnown(userId, 1).collect() {
                         Log.d("word", "$it")
                         val list = ArrayList(it)
                         setupListOfDataIntoRecyclerView(list, wordDao, userId)
@@ -138,14 +134,20 @@ class WordEditor : AppCompatActivity() {
         if (wordList.isNotEmpty()) {
             val itemAdapter = ItemAdapter(wordList,
                 { changeId ->
-                    changeRecordDialog(changeId, wordDao, userId)
+                    lifecycleScope.launch {
+                        wordDao.fetchAllWordById(changeId).collect {
+                            if (it != null) {
+                                changeRecordDialog(changeId, wordDao, it)
+                            }
+                        }
+                    }
                 },
                 { updateId ->
                     updateRecordDialog(updateId, wordDao, userId)
                 },
                 { deleteId ->
                     lifecycleScope.launch {
-                        wordDao.fetchALlWordById(deleteId).collect {
+                        wordDao.fetchAllWordById(deleteId).collect {
                             if (it != null) {
                                 deleteRecordAlertDialog(deleteId, wordDao, it)
                             }
@@ -164,29 +166,6 @@ class WordEditor : AppCompatActivity() {
         }
     }
 
-    fun changeRecordDialog(id: Int, wordDao: WordDao, userId: Int) {
-//        val changeDialog = Dialog(this, R.style.Theme_Dialog)
-//        changeDialog.setCancelable(false)
-//        val binding = DialogUpdateBinding.inflate(layoutInflater)
-//        changeDialog.setContentView(binding.root)
-//        GlobalScope.launch {
-//            wordDao.fetchALlWordById(id).collect {
-//                if (it != null) {
-//                    wordDao.update(WordEntity(id, it.name, it.explanation, userId, 1))
-//                }
-//            }
-//        }
-//        lifecycleScope.launch {
-//            Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
-//                .show()
-//            changeDialog.dismiss()
-//        }
-//        binding.tvCancel.setOnClickListener {
-//            changeDialog.dismiss()
-//        }
-//        changeDialog.show()
-    }
-
     fun deleteRecordAlertDialog(id: Int, wordDao: WordDao, word: WordEntity) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("删除单词")
@@ -200,7 +179,7 @@ class WordEditor : AppCompatActivity() {
                 Toast.makeText(
                     applicationContext,
                     "删除单词成功.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
                 dialogInterface.dismiss()
             }
@@ -234,20 +213,16 @@ class WordEditor : AppCompatActivity() {
                     )
                 }
                 lifecycleScope.launch {
-                    Toast.makeText(applicationContext, "Record saved", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "保存单词成功", Toast.LENGTH_SHORT).show()
                     binding?.etName?.text?.clear()
                     binding?.etExplanation?.text?.clear()
-                }
-                lifecycleScope.launch {
-                    Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
-                        .show()
                     addDialog.dismiss()
                 }
             } else {
                 Toast.makeText(
                     applicationContext,
                     "单词或者释义不能为空",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -257,13 +232,19 @@ class WordEditor : AppCompatActivity() {
         addDialog.show()
     }
 
+    fun changeRecordDialog(id: Int, wordDao: WordDao, word: WordEntity) {
+        GlobalScope.launch {
+            wordDao.update(WordEntity(id, word.name, word.explanation, word.userId, 1))
+        }
+    }
+
     fun updateRecordDialog(id: Int, wordDao: WordDao, userId: Int) {
         val updateDialog = Dialog(this, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         val binding = DialogUpdateBinding.inflate(layoutInflater)
         updateDialog.setContentView(binding.root)
         lifecycleScope.launch {
-            wordDao.fetchALlWordById(id).collect {
+            wordDao.fetchAllWordById(id).collect {
                 if (it != null) {
                     binding.etUpdateName.setText(it.name)
                     binding.etExplanation.setText(it.explanation)
@@ -278,7 +259,7 @@ class WordEditor : AppCompatActivity() {
                     wordDao.update(WordEntity(id, name, email, userId))
                 }
                 lifecycleScope.launch {
-                    Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_LONG)
+                    Toast.makeText(applicationContext, "修改单词成功.", Toast.LENGTH_SHORT)
                         .show()
                     updateDialog.dismiss()
                 }
@@ -286,7 +267,7 @@ class WordEditor : AppCompatActivity() {
                 Toast.makeText(
                     applicationContext,
                     "Name or Email cannot be blank",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }

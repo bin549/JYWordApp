@@ -13,6 +13,6 @@ data class WordEntity(
     val explanation: String = "",
     @ColumnInfo(name="user_id")
     val userId: Int = 0,
-    @ColumnInfo(name="is_kown")
+    @ColumnInfo(name="is_known")
     val isKnown: Int = 0,
 )

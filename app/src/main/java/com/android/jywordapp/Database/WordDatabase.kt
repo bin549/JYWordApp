@@ -9,7 +9,7 @@ import com.android.jywordapp.Dao.WordDao
 import com.android.jywordapp.model.UserEntity
 import com.android.jywordapp.model.WordEntity
 
-@Database(entities = [WordEntity::class, UserEntity::class], version = 8)
+@Database(entities = [WordEntity::class, UserEntity::class], version = 13)
 abstract class WordDatabase : RoomDatabase() {
     abstract fun wordDao(): WordDao
     abstract fun userDao(): UserDao
