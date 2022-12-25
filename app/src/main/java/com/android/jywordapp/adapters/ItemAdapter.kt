@@ -1,5 +1,6 @@
 package com.android.jywordapp.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -39,7 +40,6 @@ class ItemAdapter(
         } else {
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
         }
-
         holder.ivChange.setOnClickListener {
             changeListener(item.id)
         }
@@ -51,9 +51,9 @@ class ItemAdapter(
         }
         holder.cvExplanationCheck.setOnClickListener {
             holder.tvExplanation.text = item.explanation
+            holder.tvExplanation.setTextColor(Color.BLACK)
         }
     }
-
 
     override fun getItemCount(): Int {
         return items.size

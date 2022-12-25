@@ -23,7 +23,6 @@ class SentenceActivity : AppCompatActivity() {
             player = MediaPlayer.create(applicationContext, soundURI)
             player?.isLooping = true
             player?.start()
-            print(player)
         } catch (e: Exception) {
             e.printStackTrace()
         }

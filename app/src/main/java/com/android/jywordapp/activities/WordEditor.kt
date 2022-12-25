@@ -2,7 +2,6 @@ package com.android.jywordapp.activities
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +54,7 @@ class WordEditor : AppCompatActivity() {
                     override fun onQueryTextSubmit(p0: String?): Boolean {
                         return true
                     }
+
                     override fun onQueryTextChange(p0: String?): Boolean {
                         var tempArr = ArrayList<WordEntity>()
                         for (arr in list) {
@@ -154,10 +154,9 @@ class WordEditor : AppCompatActivity() {
                         }
                     }
                 }
-                    )
+            )
             binding?.rvItemsList?.layoutManager = LinearLayoutManager(this)
             binding?.rvItemsList?.adapter = itemAdapter
-            println(binding?.rvItemsList?.adapter)
             binding?.rvItemsList?.visibility = View.VISIBLE
             binding?.tvNoRecordsAvailable?.visibility = View.GONE
         } else {
@@ -171,7 +170,7 @@ class WordEditor : AppCompatActivity() {
         builder.setTitle("删除单词")
         builder.setMessage("你确定要删除单词 - （${word.name}）.")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
-        builder.setPositiveButton("Yes") { dialogInterface, _ ->
+        builder.setPositiveButton("确定") { dialogInterface, _ ->
             GlobalScope.launch {
                 wordDao.delete(WordEntity(id))
             }
@@ -184,7 +183,7 @@ class WordEditor : AppCompatActivity() {
                 dialogInterface.dismiss()
             }
         }
-        builder.setNegativeButton("No") { dialogInterface, which ->
+        builder.setNegativeButton("取消") { dialogInterface, which ->
             dialogInterface.dismiss()
         }
         val alertDialog: AlertDialog = builder.create()
@@ -266,7 +265,7 @@ class WordEditor : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     applicationContext,
-                    "Name or Email cannot be blank",
+                    "单词和释义不能为空",
                     Toast.LENGTH_SHORT
                 ).show()
             }

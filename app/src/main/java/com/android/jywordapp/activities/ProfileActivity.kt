@@ -2,22 +2,30 @@ package com.android.jywordapp.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import com.android.jywordapp.Constants
 import com.android.jywordapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
+import com.android.jywordapp.WordApp
+import com.android.jywordapp.model.Exam
+import kotlinx.coroutines.launch
+import java.time.ZoneId
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
     private var cal = Calendar.getInstance()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -47,16 +55,25 @@ class ProfileActivity : AppCompatActivity() {
         tvIntro.text = "个人简介：" + "这个人很懒，啥也没写。"
         tvWord.text = "单词本"
         tvVocabulary.text = "词汇量"
+        val userId = intent.getIntExtra(Constants.USER_ID, 0)
+        val wordDao = (application as WordApp).db.wordDao()
+        lifecycleScope.launch {
+            wordDao.fetchWordsByIsKnown(userId, 1).collect() {
+                val list = ArrayList(it)
+                tvVocabularyQuantity.text = list.size.toString() + "个"
+            }
+        }
+        var exam: Exam = Constants.getExams().get(0)
+        val dateNow = Calendar.getInstance().time
+        var examTime = Date.from(exam.date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())
+        var leftTime = examTime.time - dateNow.time
+        tvCountdownWord.text = "距离" + exam.name
+        tvCountdownTime.text = "还剩下" +(leftTime/(60*60*24*1000)).toString()+"天"
 
-
-
-        tvVocabularyQuantity.text = "12个"
         tvOnline.text = "累计在线"
         tvOnlineQuantity.text = "42天"
         tvCountdownDescription.text = "倒计时"
         tvQuiz.text = "词汇小测"
-        tvCountdownWord.text = "距离四级考试"
-        tvCountdownTime.text = "还48天"
         tvSentence.text = "句子迷"
         tvLock.text = "开发中"
 
