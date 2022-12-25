@@ -19,7 +19,7 @@ class SentenceActivity : AppCompatActivity() {
 
     private fun playBGM() {
         try {
-            val soundURI = Uri.parse("android.resource://com.android.jywordapp/" + R.raw.prologue)
+            val soundURI = Uri.parse("android.resource://com.android.wordapp/" + R.raw.prologue)
             player = MediaPlayer.create(applicationContext, soundURI)
             player?.isLooping = true
             player?.start()

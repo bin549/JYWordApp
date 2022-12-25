@@ -24,16 +24,16 @@ class ResultActivity : AppCompatActivity() {
         tvPlayer.text ="你答对了" + correctCount.toString() + "题"
         if (correctCount == totalCount) {
             tvPlayer.text ="你全答对了"
-            ivResult.setImageURI(Uri.parse("android.resource://com.android.jywordapp/" + R.drawable.best))
+            ivResult.setImageURI(Uri.parse("android.resource://com.android.wordapp/" + R.drawable.best))
         }else if (correctCount == 0) {
             tvPlayer.text ="你全答错了"
-            ivResult.setImageURI(Uri.parse("android.resource://com.android.jywordapp/" + R.drawable.suck))
+            ivResult.setImageURI(Uri.parse("android.resource://com.android.wordapp/" + R.drawable.suck))
         } else if (correctCount > totalCount / 2) {
             tvScore.text =  "恭喜你:" + userName + "🤩"
-            ivResult.setImageURI(Uri.parse("android.resource://com.android.jywordapp/" + R.drawable.good))
+            ivResult.setImageURI(Uri.parse("android.resource://com.android.wordapp/" + R.drawable.good))
         } else {
             tvScore.text = "继续努力吧！" + userName + "🥴"
-            ivResult.setImageURI(Uri.parse("android.resource://com.android.jywordapp/" + R.drawable.bad))
+            ivResult.setImageURI(Uri.parse("android.resource://com.android.wordapp/" + R.drawable.bad))
         }
         btnFinish.setOnClickListener {
             startActivity(Intent(this@ResultActivity, ProfileActivity::class.java))
