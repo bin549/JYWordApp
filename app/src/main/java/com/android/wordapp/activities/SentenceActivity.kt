@@ -1,8 +1,8 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.android.jywordapp.R
+import com.android.wordapp.R
 import android.media.MediaPlayer
 import android.net.Uri
 

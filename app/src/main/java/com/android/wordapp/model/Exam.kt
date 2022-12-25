@@ -1,4 +1,4 @@
-package com.android.jywordapp.model
+package com.android.wordapp.model
 
 import java.time.LocalDate
 

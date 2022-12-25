@@ -1,7 +1,7 @@
-package com.android.jywordapp.Dao
+package com.android.wordapp.Dao
 
 import androidx.room.*
-import com.android.jywordapp.model.WordEntity
+import com.android.wordapp.model.WordEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

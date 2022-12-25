@@ -1,4 +1,4 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -10,14 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import com.android.jywordapp.Constants
-import com.android.jywordapp.R
+import com.android.wordapp.Constants
+import com.android.wordapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
-import com.android.jywordapp.WordApp
-import com.android.jywordapp.model.Exam
+import com.android.wordapp.WordApp
+import com.android.wordapp.model.Exam
 import kotlinx.coroutines.launch
 import java.time.ZoneId
 
@@ -29,8 +29,11 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+        val userName = intent.getStringExtra(Constants.USER_Name)
         val wordEditorIntent = Intent(this@ProfileActivity, WordEditor::class.java)
-        wordEditorIntent.putExtra(Constants.USER_ID, intent.getIntExtra(Constants.USER_ID,0))
+        wordEditorIntent.putExtra(Constants.USER_ID, intent.getIntExtra(Constants.USER_ID, 0))
+        val quizIntent = Intent(this@ProfileActivity, QuizActivity::class.java)
+        quizIntent.putExtra(Constants.USER_Name, userName)
         var ivCountdown: ImageView = findViewById(R.id.iv_countdown)
         var wordCard: CardView = findViewById(R.id.wordCard)
         var quizCard: CardView = findViewById(R.id.quizCard)
@@ -39,7 +42,6 @@ class ProfileActivity : AppCompatActivity() {
         var btnLogout: Button = findViewById(R.id.btn_logout)
         var tvName: TextView = findViewById(R.id.tv_name)
         var tvIntro: TextView = findViewById(R.id.tv_intro)
-        val userName = intent.getStringExtra(Constants.USER_Name)
         var tvWord: TextView = findViewById(R.id.tv_word)
         var tvVocabulary: TextView = findViewById(R.id.tv_vocabulary)
         var tvVocabularyQuantity: TextView = findViewById(R.id.tv_vocabulary_quantity)
@@ -65,10 +67,11 @@ class ProfileActivity : AppCompatActivity() {
         }
         var exam: Exam = Constants.getExams().get(0)
         val dateNow = Calendar.getInstance().time
-        var examTime = Date.from(exam.date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())
+        var examTime =
+            Date.from(exam.date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())
         var leftTime = examTime.time - dateNow.time
         tvCountdownWord.text = "距离" + exam.name
-        tvCountdownTime.text = "还剩下" +(leftTime/(60*60*24*1000)).toString()+"天"
+        tvCountdownTime.text = "还剩下" + (leftTime / (60 * 60 * 24 * 1000)).toString() + "天"
 
         tvOnline.text = "累计在线"
         tvOnlineQuantity.text = "42天"
@@ -96,7 +99,7 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(wordEditorIntent)
         }
         quizCard.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, QuizActivity::class.java))
+            startActivity(Intent(quizIntent))
         }
         btnLogout.setOnClickListener {
             startActivity(Intent(this@ProfileActivity, MainActivity::class.java))

@@ -1,4 +1,4 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import android.content.Intent
 import android.graphics.Color
@@ -10,10 +10,10 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.android.jywordapp.Constants
-import com.android.jywordapp.R
-import com.android.jywordapp.databinding.ActivityQuizBinding
-import com.android.jywordapp.model.Question
+import com.android.wordapp.Constants
+import com.android.wordapp.R
+import com.android.wordapp.databinding.ActivityQuizBinding
+import com.android.wordapp.model.Question
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var binding: ActivityQuizBinding? = null

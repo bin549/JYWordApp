@@ -1,4 +1,4 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.android.jywordapp.Constants
-import com.android.jywordapp.R
-import com.android.jywordapp.WordApp
+import com.android.wordapp.Constants
+import com.android.wordapp.R
+import com.android.wordapp.WordApp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

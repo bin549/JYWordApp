@@ -1,4 +1,4 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,15 +10,15 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.jywordapp.Constants
-import com.android.jywordapp.Dao.WordDao
-import com.android.jywordapp.R
-import com.android.jywordapp.WordApp
-import com.android.jywordapp.adapters.ItemAdapter
-import com.android.jywordapp.databinding.ActivityWordEditorBinding
-import com.android.jywordapp.databinding.DialogAddBinding
-import com.android.jywordapp.databinding.DialogUpdateBinding
-import com.android.jywordapp.model.WordEntity
+import com.android.wordapp.Constants
+import com.android.wordapp.Dao.WordDao
+import com.android.wordapp.R
+import com.android.wordapp.WordApp
+import com.android.wordapp.adapters.ItemAdapter
+import com.android.wordapp.databinding.ActivityWordEditorBinding
+import com.android.wordapp.databinding.DialogAddBinding
+import com.android.wordapp.databinding.DialogUpdateBinding
+import com.android.wordapp.model.WordEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -45,8 +45,11 @@ class WordEditor : AppCompatActivity() {
             addRecordDialog(wordDao, userId)
         }
         val search_view: SearchView = findViewById(R.id.search_view)
+
+        var isKnown : Int = 0;
+
         lifecycleScope.launch {
-            wordDao.fetchWordsByIsKnown(userId, 0).collect() {
+            wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
                 Log.d("word", "$it")
                 val list = ArrayList(it)
                 setupListOfDataIntoRecyclerView(list, wordDao, userId)
@@ -69,58 +72,37 @@ class WordEditor : AppCompatActivity() {
                 })
             }
         }
+
+
         binding?.rbAllWords?.setOnCheckedChangeListener { _, checkedId: Int ->
             if (checkedId == R.id.rbKnownWords) {
-                lifecycleScope.launch {
-                    wordDao.fetchWordsByIsKnown(userId, 0).collect() {
-                        Log.d("word", "$it")
-                        val list = ArrayList(it)
-                        setupListOfDataIntoRecyclerView(list, wordDao, userId)
-                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                            override fun onQueryTextSubmit(p0: String?): Boolean {
-                                return true
-                            }
-
-                            override fun onQueryTextChange(p0: String?): Boolean {
-                                var tempArr = ArrayList<WordEntity>()
-                                for (arr in list) {
-                                    if (arr.name!!.toLowerCase(Locale.getDefault())
-                                            .contains(p0.toString())
-                                    ) {
-                                        tempArr.add(arr)
-                                    }
-                                }
-                                setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
-                                return true
-                            }
-                        })
-                    }
-                }
+                isKnown = 0
             } else {
-                lifecycleScope.launch {
-                    wordDao.fetchWordsByIsKnown(userId, 1).collect() {
-                        Log.d("word", "$it")
-                        val list = ArrayList(it)
-                        setupListOfDataIntoRecyclerView(list, wordDao, userId)
-                        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                            override fun onQueryTextSubmit(p0: String?): Boolean {
-                                return true
-                            }
+                isKnown = 1
+            }
 
-                            override fun onQueryTextChange(p0: String?): Boolean {
-                                var tempArr = ArrayList<WordEntity>()
-                                for (arr in list) {
-                                    if (arr.name!!.toLowerCase(Locale.getDefault())
-                                            .contains(p0.toString())
-                                    ) {
-                                        tempArr.add(arr)
-                                    }
+            lifecycleScope.launch {
+                wordDao.fetchWordsByIsKnown(userId, isKnown).collect() {
+                    Log.d("word", "$it")
+                    val list = ArrayList(it)
+                    setupListOfDataIntoRecyclerView(list, wordDao, userId)
+                    search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(p0: String?): Boolean {
+                            return true
+                        }
+
+                        override fun onQueryTextChange(p0: String?): Boolean {
+                            var tempArr = ArrayList<WordEntity>()
+                            for (arr in list) {
+                                if (arr.name!!.toLowerCase(Locale.getDefault()).contains(p0.toString())
+                                ) {
+                                    tempArr.add(arr)
                                 }
-                                setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
-                                return true
                             }
-                        })
-                    }
+                            setupListOfDataIntoRecyclerView(tempArr, wordDao, userId)
+                            return true
+                        }
+                    })
                 }
             }
         }
@@ -131,6 +113,9 @@ class WordEditor : AppCompatActivity() {
         wordDao: WordDao,
         userId: Int
     ) {
+        binding?.rvItemsList?.adapter = null
+        binding?.rvItemsList?.visibility = View.GONE
+        binding?.tvNoRecordsAvailable?.visibility = View.VISIBLE
         if (wordList.isNotEmpty()) {
             val itemAdapter = ItemAdapter(wordList,
                 { changeId ->

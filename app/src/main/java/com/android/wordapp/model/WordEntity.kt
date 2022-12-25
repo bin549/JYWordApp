@@ -1,4 +1,4 @@
-package com.android.jywordapp.model
+package com.android.wordapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

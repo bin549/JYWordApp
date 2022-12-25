@@ -1,7 +1,7 @@
-package com.android.jywordapp
+package com.android.wordapp
 
 import android.app.Application
-import com.android.jywordapp.Database.WordDatabase
+import com.android.wordapp.Database.WordDatabase
 
 class WordApp : Application() {
     val db by lazy {

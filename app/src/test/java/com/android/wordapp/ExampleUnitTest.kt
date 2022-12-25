@@ -1,4 +1,4 @@
-package com.android.jywordapp
+package com.android.wordapp
 
 import org.junit.Test
 import org.junit.Assert.*

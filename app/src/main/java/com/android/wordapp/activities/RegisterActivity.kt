@@ -1,4 +1,4 @@
-package com.android.jywordapp.activities
+package com.android.wordapp.activities
 
 import android.app.Dialog
 import android.content.Intent
@@ -10,13 +10,13 @@ import android.widget.Button
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.android.jywordapp.R
+import com.android.wordapp.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_progress.*
 import android.os.CountDownTimer
-import com.android.jywordapp.Constants
-import com.android.jywordapp.WordApp
-import com.android.jywordapp.model.UserEntity
+import com.android.wordapp.Constants
+import com.android.wordapp.WordApp
+import com.android.wordapp.model.UserEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,7 +67,7 @@ class RegisterActivity : AppCompatActivity() {
         if (validateForm(username, email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
             GlobalScope.launch {
-                var randomId : Int = Random.nextInt();
+                var randomId: Int = Random.nextInt();
                 delay(1000)
                 userDao.insert(
                     UserEntity(

@@ -1,13 +1,13 @@
-package com.android.jywordapp.adapters
+package com.android.wordapp.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.jywordapp.R
-import com.android.jywordapp.databinding.ItemsRowBinding
-import com.android.jywordapp.model.WordEntity
+import com.android.wordapp.R
+import com.android.wordapp.databinding.ItemsRowBinding
+import com.android.wordapp.model.WordEntity
 
 class ItemAdapter(
     private val items: ArrayList<WordEntity>,

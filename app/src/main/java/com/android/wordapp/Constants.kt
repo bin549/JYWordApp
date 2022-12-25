@@ -1,11 +1,11 @@
 @file:Suppress("DEPRECATION")
 
-package com.android.jywordapp
+package com.android.wordapp
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.android.jywordapp.model.Exam
-import com.android.jywordapp.model.Question
+import com.android.wordapp.model.Exam
+import com.android.wordapp.model.Question
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
